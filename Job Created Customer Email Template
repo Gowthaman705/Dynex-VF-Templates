@@ -1,0 +1,9 @@
+<messaging:emailTemplate subject="New Job Notification" recipientType="User" relatedToType="fax__Job__c">
+<messaging:htmlEmailBody >
+Dear {!relatedto.fax__Contact__r.FirstName},
+<br/>
+<p>Job {!relatedto.Name} has been created for {!relatedto.fax__Customer__r.Name} on {!relatedto.Install_Base_Name__c} instrument {!relatedto.Install_Base_Product__c}. </p>
+
+FieldAx
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>
