@@ -1,0 +1,22 @@
+<messaging:emailTemplate subject="New Job {!relatedto.fax__Job_new__r.Name} Assigned {!relatedto.fax__Site__c} {!relatedto.fax__Job_new__r.Severity__c}" recipientType="User" relatedToType="fax__Assigned_Engineer__c">
+<messaging:htmlEmailBody >
+Dear Customer, 
+<p>
+      {!relatedto.fax__Service_Engineer__r.Name} have been assigned  <apex:outputLink value="https://d36000000jyhleaq--fieldax.sandbox.lightning.force.com/lightning/r/fax__Job__c/{!relatedto.fax__Job_new__c}/view"> {!relatedto.fax__Job_new__r.Name}</apex:outputLink> for {!relatedto.fax__Site__c}  
+{!relatedto.Install_Base_Name__c} {!relatedto.Install_Base_Product__c}
+<apex:repeat value="{!relatedto.fax__Job_new__r}" var="job1" >
+{!job1.fax__Job_Type__r.Name}
+</apex:repeat>
+with {!relatedto.fax__Job_new__r.Service_Level__c} scheduled to be onsite &nbsp;<apex:outputText value="{0,date,MM/dd/yyyy hh:mm:ss}">
+    <apex:param value="{!relatedto.fax__Start__c- 0.166666667}" />
+</apex:outputText>. Please make arrangements to ensure the necessary parts are available or onsite to coincide with your arrival. </p>
+<apex:repeat value="{!relatedto.fax__Job_new__r}" var="job" >
+Please call {!job.fax__Contact__r.Name} phone: {!job.fax__Contact__r.Phone} or email: {!job.fax__Contact__r.Email} to confirm your appointment.
+</apex:repeat><br/>
+Best regards,<br/>
+Dynex Technologies<br/>
+Phone: +1 (703) 631-7800<br/>
+Email: techservice@dynex.com
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>
