@@ -1,0 +1,122 @@
+<messaging:emailTemplate subject="{!relatedto.Name} Has Been Completed {!relatedTo.Install_Base_Product__c} {!relatedTo.Install_Base_Name__c} {!relatedto.fax__Job_Type__r.Name} " recipientType="User" relatedToType="fax__Job__c">
+<messaging:htmlEmailBody >
+Dear {!relatedto.fax__Contact__r.FirstName}, 
+<p>
+                  please see the attached service report for completed {!relatedto.Name} for&nbsp;
+<apex:repeat value="{!relatedto.fax__Systems__r}" var="jobItem">
+<apex:repeat value="{!jobItem.Install_base__r}" var="installItem">
+{!installItem.Item__r.Name}, {!installItem.Name} 
+</apex:repeat>
+</apex:repeat>.
+Thank you for being a Dynex customer! If there any additional questions or follow up, please contact us at techservice@dynex.com or customer XXX-XXX-XXXX</p>
+
+Best regards<br/>
+FieldAx
+</messaging:htmlEmailBody>
+
+<messaging:attachment filename="{!if(relatedto.RecordTypeId == $Label.FS_RecordType_ID, 'Field Service Report -' & relatedto.Install_Base_Name__c & ' - '&TEXT(MONTH(TODAY())) & '/' & TEXT(DAY(TODAY())) & '/' & TEXT(YEAR(TODAY())), if(relatedto.RecordTypeId == $Label.Depot_Repair_Record_Type, 'Repair Report - ' &relatedto.Install_Base_Name__c & ' - '&TEXT(MONTH(TODAY())) & '/' & TEXT(DAY(TODAY())) & '/' & TEXT(YEAR(TODAY())), 'Service Report'))}" renderAs="pdf" >
+<head>
+<style type="text/CSS">
+    p.Normal, li.Normal, div.Normal
+    {margin:0in;
+    margin-bottom:.0001pt;
+    font-size:9.0pt;
+    font-family:"Times New Roman","serif";}
+    h1
+    {margin:0in;
+    margin-bottom:.0001pt;
+    font-size:12.0pt;
+    font-family:"Arial","sans-serif";
+    color:#1F497D;}
+    p.Header, li.Header, div.Header
+    {margin:0in;
+    margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    tab-stops:center 3.0in right 6.0in;
+    font-size:9.0pt;
+    font-family:"Arial","serif";}
+    p.Footer, li.Footer, div.Footer
+    {margin:0in;
+    margin-bottom:.0001pt;
+    tab-stops:center 3.0in right 6.0in;
+    font-size:9.0pt;
+    font-family:"Arial","serif";}
+    tr.BodyText, td.BodyText
+    {margin-top:0in;
+    margin-right:0in;
+    margin-bottom:4.0pt;
+    margin-left:0in;
+    padding:1pt 5pt 1pt 5pt;
+    font-size:9.0pt;
+    font-family:"Arial","sans-serif";}
+    p.BodyText, li.BodyText, div.BodyText
+    {margin-top:0in;
+    margin-right:0in;
+    margin-bottom:4.0pt;
+    margin-left:0in;
+    font-size:9.0pt;
+    font-family:"Arial","sans-serif";}
+    a:link, span.Hyperlink
+    {color:blue;
+    text-decoration:underline;
+    text-underline:single;}
+    a:visited, span.HyperlinkFollowed
+    {color:purple;
+    text-decoration:underline;
+    text-underline:single;}
+    p.Instructions, li.Instructions, div.Instructions
+    {margin-top:0in;
+    margin-right:0in;
+    margin-bottom:0in;
+    margin-left:.25in;
+    margin-bottom:.0001pt;
+    text-indent:-.25in;
+    font-size:8.0pt;
+    mso-bidi-font-size:11.0pt;
+    font-family:"Arial","sans-serif";}
+    span.Heading1Char
+    {font-family:"Arial","sans-serif";
+    color:#1F497D;
+    font-weight:bold;}
+    span.InstructionsChar
+    {font-family:"Arial","sans-serif";}
+    p.HeadingCentered, li.HeadingCentered, div.HeadingCentered
+    {margin:0in;
+    margin-bottom:.0001pt;
+    text-align:center;
+    font-size:12.0pt;
+    font-family:"Arial","sans-serif";
+    color:#1F497D;
+    font-weight:bold;}
+    span.HeadingCenteredChar
+    {font-family:"Arial","sans-serif";
+    color:#1F497D;
+    font-weight:bold;}
+    ol
+    {margin-bottom:0in;}
+    ul
+    {margin-bottom:0in;}
+    table.NormalTable
+    {font-size:8.0pt;
+    font-family:"Arial","serif";
+    width:7.5in}
+    table.TableGrid
+    {border:solid black 1.0pt;
+    font-size:8.0pt;
+    font-family:"Arial","serif";}
+    @page {
+    margin:8mm;
+    @bottom-left { content: "Job #: {!relatedto.Name}";  font-size: 9pt; }
+    @bottom-right { content: "Page " counter(page) " of " counter(pages);  font-size: 9pt; }
+    @bottom-center { content: "Report Print Date&nbsp;:&nbsp; <apex:outputText value="{0,date,M'/'d'/'yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText>"; font-size: 9pt; }
+    }    
+</style>
+</head>
+<c:ServicePreviewComp Job="{!relatedto}"/>
+</messaging:attachment>
+<messaging:attachment filename="Checklist.PDF" renderAs="pdf" rendered="{!IF(AND(relatedto.fax__Job_Type__c != null,relatedto.fax__Job_Type__c != $Label.Multiplier_Analyzer_Installation_Job_Type),True,False)}">
+<apex:repeat rows="1" value="{!relatedto.fax__Systems__r}" var="JobItems" rendered="{!IF(relatedto.fax__Job_Type__c != null,True,False)}">
+<c:ChecklistPreviewComp Job="{!relatedTo}" jobItem="{!JobItems}"/>
+</apex:repeat>
+</messaging:attachment>
+</messaging:emailTemplate>
